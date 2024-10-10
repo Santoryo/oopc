@@ -21,9 +21,7 @@ int main()
   while(!s.isEmpty())
   {
     std::cout << "Popped " << s.pop() << std::endl;
-  }
-
-  std::cout << "Peek top element: " << s.peek() << std::endl;
+  }S
 
   return 0;
 }

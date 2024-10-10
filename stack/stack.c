@@ -6,14 +6,13 @@ void init(Stack* s)
 {
 	s->size = 0;
 	s->capacity = INITIAL_CAPACITY;
-	s->data = (int*) malloc (INITIAL_CAPACITY * sizeof(int));
-	if(s->data == NULL) exit(1);
+	int* temp = (int*) malloc (INITIAL_CAPACITY * sizeof(int));
+	if(temp == NULL) exit(1);
+	s->data = temp;
 }
 
 void destroy(Stack* s)
 {
-	s->size = 0;
-	s->capacity = 0;
 	free(s->data);
 }
 
@@ -22,8 +21,9 @@ void push(Stack* s, int element)
 	if(s->capacity == s->size)
 	{
 		s->capacity *= 2;
-		s->data = (int *) realloc(s->data, s->capacity * sizeof(int));
-		if(s->data == NULL) exit(1);
+		int* temp = (int*) realloc(s->data, s->capacity * sizeof(int));
+		if(temp == NULL) exit(1);
+		s->data = temp;
 	}
 	s->data[s->size++] = element;
 }
