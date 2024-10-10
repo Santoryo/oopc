@@ -4,8 +4,8 @@ In C++ language you can use malloc and free functions for memory allocation as y
 Carefully test the implemented functionality.
 Use valgrind to verify there are no memory leaks.
 Split the program into Stack.h, Stack.cpp and TestStack.cpp files.
-Tip: in C++ language a bool is a built in type (like int or double). There is no need to include the stdbool.h header file.
-Tip: use the #pragma once directive (as in the previous task). 
+*Tip: in C++ language a bool is a built in type (like int or double). There is no need to include the stdbool.h header file.*
+*Tip: use the #pragma once directive (as in the previous task). *
 
 
 ## Additional task - Extended Stack
