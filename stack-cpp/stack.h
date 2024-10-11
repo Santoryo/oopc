@@ -11,7 +11,7 @@ class Stack {
     void push(int element);
     int pop();
     bool isEmpty();
-    int peek();
+    Stack(const Stack &otherStack);
     Stack();
     ~Stack();
 };

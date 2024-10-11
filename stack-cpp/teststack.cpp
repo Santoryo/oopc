@@ -21,7 +21,7 @@ int main()
   while(!s.isEmpty())
   {
     std::cout << "Popped " << s.pop() << std::endl;
-  }S
+  }
 
   return 0;
 }
