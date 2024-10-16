@@ -9,7 +9,6 @@ Stack::Stack()
     int* temp = (int *)malloc(capacity * sizeof(int));
     if (temp == NULL)
     {
-        free(data);
         exit(1);
     }
     else
@@ -26,7 +25,7 @@ Stack::Stack(const Stack &otherStack)
 
     if (temp == NULL)
     {
-        free(data);
+        printf("Error, could not allocate memory while copying\n");
         exit(1);
     }
     else
@@ -40,9 +39,35 @@ Stack::Stack(const Stack &otherStack)
     }
 }
 
-Stack:: Stack& operator=(const Stack& otherStack)
+Stack& Stack::operator=(const Stack& otherStack)
 {
+    if (this == &otherStack)
+    {
+        return *this;
+    }
+    
+    if(capacity < otherStack.size)
+    {
+        int* temp = (int *)realloc(data, otherStack.capacity * sizeof(int));
+        if (temp == NULL)
+        {
+            printf("Error, could not allocate memory for assigment\n");
+            exit(1);
+        }
+        data = temp;
+    }
+
+    for(int i = 0; i < otherStack.size; i++)
+    {
+        data[i] = otherStack.data[i];
+    }
+
+    size = otherStack.size;
+    capacity = otherStack.capacity;
+
+    return *this;
 }
+
 
 Stack::~Stack()
 {
@@ -81,4 +106,19 @@ int Stack::pop()
         exit(1);
     }
     return data[--size];
+}
+
+void Stack::print()
+{
+    printf("[");
+    for(int i = 0; i < size; i++)
+    {
+        if(i == size - 1)
+        {
+            printf("%d", data[i]);
+            break;
+        }
+        printf("%d, ", data[i]);
+    }
+    printf("]\n");
 }

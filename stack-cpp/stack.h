@@ -15,4 +15,5 @@ class Stack {
     Stack();
     ~Stack();
     Stack& operator=(const Stack& otherStack);
+    void print();
 };
