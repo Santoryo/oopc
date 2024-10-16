@@ -40,6 +40,10 @@ Stack::Stack(const Stack &otherStack)
     }
 }
 
+Stack:: Stack& operator=(const Stack& otherStack)
+{
+}
+
 Stack::~Stack()
 {
     free(data);

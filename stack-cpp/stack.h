@@ -14,4 +14,5 @@ class Stack {
     Stack(const Stack &otherStack);
     Stack();
     ~Stack();
+    Stack& operator=(const Stack& otherStack);
 };
