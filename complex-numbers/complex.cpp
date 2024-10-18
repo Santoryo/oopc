@@ -104,7 +104,6 @@ std::ostream &operator<<(std::ostream &stream, const Complex &other)
         sign = "+";
     }
 
-
     stream << other.real << sign << other.imag << "i";
     return stream;
 }
