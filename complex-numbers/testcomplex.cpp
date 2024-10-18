@@ -1,26 +1,43 @@
 #include "complex.h"
 #include <iostream>
 
+Complex a(1.0, 2.0);
+Complex b(3.4, 5.0);
+Complex c(5.1, 9.0);
+
+void test()
+{
+    std::cout << "a: " << a << std::endl;
+    std::cout << "b: " << b << std::endl;
+    std::cout << "a + b: " << a + b << std::endl;
+    std::cout << "a - b: " << a - b << std::endl;
+    std::cout << "a * b: " << a * b << std::endl;
+    std::cout << "a / b: " << a / b << std::endl;
+    std::cout << "a == b: " << (a == b) << std::endl;
+    std::cout << "a != b: " << (a != b) << std::endl;
+}
+
+void testEdgeCases()
+{
+    std::cout << "Testing a += b += c +=" << std::endl;
+    std::cout << (a += b += c) << std::endl;
+    std::cout << "Testing (a += b) += c" << std::endl;
+    std::cout << ((a += b) += c) << std::endl;
+    std::cout << "Testing a *= b *= c" << std::endl;
+    std::cout << (a *= b *= c) << std::endl;
+    std::cout << "Testing (a *= b) *= c" << std::endl;
+    std::cout << ((a *= b) *= c) << std::endl;
+    std::cout << "Testing a + 7" << std::endl;
+    std::cout << (a + 7) << std::endl;
+
+}
+
 int main()
 {
     std::cout << "Testing complex numbers" << std::endl;
-
-    Complex c1(1, 2);
-    Complex c2(3, 4);
-    Complex c3;
-
-
-    std::cout << "c1: " << c1 << std::endl;
-    std::cout << "c2: " << c2 << std::endl;
-    std::cout << "c1 + c2: " << c1 + c2 << std::endl;
-    std::cout << "c1 - c2: " << c1 - c2 << std::endl;
-    std::cout << "c1 * c2: " << c1 * c2 << std::endl;
-    std::cout << "c1 / c2: " << c1 / c2 << std::endl;
-    std::cout << "c1 == c2: " << (c1 == c2) << std::endl;
-    std::cout << "c1 != c2: " << (c1 != c2) << std::endl;
-
-    std::cout << "c1 + 3.5" << c1 + 3.5 << std::endl;
-    std::cout << "a + 7" << c1 + 7 << std::endl;
+    std::cout << std::boolalpha;
+    test();
+    testEdgeCases();
 
 
     return 0;

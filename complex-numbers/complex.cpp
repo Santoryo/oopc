@@ -1,4 +1,5 @@
 #include "complex.h"
+#include <math.h>
 
 Complex::Complex(double r, double i)
 {
@@ -96,6 +97,14 @@ bool Complex::operator!=(const Complex &other)
 
 std::ostream &operator<<(std::ostream &stream, const Complex &other)
 {
-    stream << "(" << other.real << "," << other.imag << ")";
+    std::string sign = "";
+
+    if(other.imag >= 0)
+    {
+        sign = "+";
+    }
+
+
+    stream << other.real << sign << other.imag << "i";
     return stream;
 }
