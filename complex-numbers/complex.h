@@ -17,6 +17,8 @@ class Complex {
         Complex operator*(const Complex& other);
         Complex operator/(const Complex& other);
 
+        friend Complex operator+(const Complex& other);
+
         Complex& operator+=(const Complex& other);
         Complex& operator-=(const Complex& other);
         Complex& operator*=(const Complex& other);

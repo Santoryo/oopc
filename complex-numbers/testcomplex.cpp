@@ -29,6 +29,8 @@ void testEdgeCases()
     std::cout << ((a *= b) *= c) << std::endl;
     std::cout << "Testing a + 7" << std::endl;
     std::cout << (a + 7) << std::endl;
+    std::cout << "Testing 7 + a" << std::endl;
+    std::cout << (7 + a) << std::endl;
 
 }
 
