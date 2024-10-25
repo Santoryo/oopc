@@ -8,12 +8,12 @@ Complex::Complex(double r, double i)
     imag = i;
 }
 
-double Complex::amplitude()
+const double Complex::amplitude()
 {
     return sqrt(real * real + imag * imag);
 }
 
-double Complex::phase()
+const double Complex::phase()
 {
     return atan2(imag, real);
 }
@@ -82,23 +82,23 @@ Complex &Complex::operator/=(const Complex &other)
     return *this;
 }
 
-bool Complex::operator==(const Complex &other)
+const bool Complex::operator==(const Complex &other)
 {
     return real == other.real && imag == other.imag;
 }
 
-bool Complex::operator!=(const Complex &other)
+const bool Complex::operator!=(const Complex &other)
 {
     return real != other.real && imag != other.imag;
 }
 
 std::ostream &operator<<(std::ostream &stream, const Complex &other)
 {
-    std::string sign = " ";
+    std::string sign = "";
 
     if(other.imag >= 0)
     {
-        sign = " + ";
+        sign = "+";
     }
 
     stream << other.real << sign << other.imag << "i";

@@ -10,26 +10,26 @@ void reset()
     c = Complex(53.0, 4.0);
 }
 
-void displayCategory(const std::string& category)
+void displayCategory(const std::string &category)
 {
     std::cout << "====================" << std::endl;
     std::cout << category << std::endl;
     std::cout << "====================" << std::endl;
 }
 
-void test(const std::string& testName, const Complex& result)
+void test(const std::string &testName, const Complex &result)
 {
     reset();
     std::cout << testName << ": " << result << std::endl;
 }
 
-void test(const std::string& testName, bool result)
+void test(const std::string &testName, bool result)
 {
     reset();
     std::cout << testName << ": " << result << std::endl;
 }
 
-void test(const std::string& testName, double result)
+void test(const std::string &testName, double result)
 {
     reset();
     std::cout << testName << ": " << result << std::endl;
