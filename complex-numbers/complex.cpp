@@ -1,5 +1,6 @@
 #include "complex.h"
 #include <math.h>
+#include <iostream>
 
 Complex::Complex(double r, double i)
 {
@@ -7,17 +8,7 @@ Complex::Complex(double r, double i)
     imag = i;
 }
 
-double Complex::getReal()
-{
-    return real;
-}
-
-double Complex::getImag()
-{
-    return imag;
-}
-
-double Complex::magnitude()
+double Complex::amplitude()
 {
     return sqrt(real * real + imag * imag);
 }
@@ -47,6 +38,12 @@ Complex Complex::operator*(const Complex &other)
 
 Complex Complex::operator/(const Complex &other)
 {
+    if(other.real == 0 && other.imag == 0)
+    {
+        std::cout << "Error: Division by zero" << std::endl;
+        exit(1);
+    }
+
     Complex result;
     double denominator = other.real * other.real + other.imag * other.imag;
     result.real = (real * other.real + imag * other.imag) / denominator;
@@ -97,13 +94,47 @@ bool Complex::operator!=(const Complex &other)
 
 std::ostream &operator<<(std::ostream &stream, const Complex &other)
 {
-    std::string sign = "";
+    std::string sign = " ";
 
     if(other.imag >= 0)
     {
-        sign = "+";
+        sign = " + ";
     }
 
     stream << other.real << sign << other.imag << "i";
     return stream;
+}
+
+Complex operator+(const double num, const Complex &other)
+{
+    return Complex(other.real + num, other.imag);
+}
+
+Complex operator-(const double num, const Complex &other)
+{
+    return Complex(num - other.real, -other.imag);
+}
+
+Complex operator*(const double num, const Complex &other)
+{
+    return Complex(other.real * num, other.imag * num);
+}
+
+Complex operator/(const double num, const Complex &other)
+{
+    Complex result;
+    double denominator = other.real * other.real + other.imag * other.imag;
+    result.real = (num * other.real) / denominator;
+    result.imag = (-num * other.imag) / denominator;
+    return result;
+}
+
+bool operator==(const double num, const Complex &other)
+{
+    return num == other.real && other.imag == 0;
+}
+
+bool operator!=(const double num, const Complex &other)
+{
+    return num != other.real || other.imag != 0;
 }
