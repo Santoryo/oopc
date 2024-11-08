@@ -3,25 +3,21 @@
 #include <iostream>
 
 class Poly {
-    public:
+    private:
         std::map<int, double> poly;
-        Poly();
-        Poly(double c);
-        Poly(const Poly &p);
+        bool checkIfZero() const;
+        void deleteZeros();
+    public:
+        Poly() = default;
+        Poly(double val);
         double& operator[](int index);
         double operator()(double point) const;
 
-        const Poly operator+(const Poly &other) const;
-        const Poly operator-(const Poly &other) const;
-        const Poly operator*(const Poly &other) const;
-
         Poly operator-() const;
+
+        friend Poly operator+(const Poly &p1, const Poly &p2);
+        friend Poly operator-(const Poly &p1, const Poly &p2);
+        friend Poly operator*(const Poly &p1, const Poly &p2);
+
+        friend std::ostream &operator<<(std::ostream &stream, const Poly &other);
 };
-
-Poly operator+(double scalar, const Poly &other);
-Poly operator-(double scalar, const Poly &other);
-Poly operator*(double scalar, const Poly &other);
-
-std::ostream &operator<<(std::ostream &stream, const Poly &poly);
-std::string parseCoefficient(int key, double value, bool displaySign);
-bool checkIfZero(const Poly &other);

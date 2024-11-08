@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <cmath>
 
+std::string parseCoefficient(int key, double value, bool displaySign);
+
 double Poly::operator()(double point) const
 {
     double result = 0;
@@ -19,77 +21,58 @@ double& Poly::operator[](int index)
     return poly[index];
 }
 
-Poly::Poly() {}
-
-Poly::Poly(double c)
+Poly::Poly(double val)
 {
-    this->poly[0] = c;
+    poly[0] = val;
 }
 
-Poly::Poly(const Poly &p)
+Poly operator+(const Poly &p1, const Poly &p2)
 {
-    this->poly = p.poly;
-}
-
-const Poly Poly::operator+(const Poly &other) const
-{
-    Poly result = *this;
-    for(auto coefficient : other.poly)
+    Poly result = p1;
+    for(auto coefficient : p2.poly)
     {
-        const int first = coefficient.first;
-        if(result.poly.count(first) > 0)
+        const int key = coefficient.first;
+        if(result.poly.count(key) > 0)
         {
-            result.poly[first] += other.poly.at(first);
+            result.poly[key] += p2.poly.at(key);
         }
         else
         {
-            result.poly[first] = other.poly.at(first);
+            result.poly[key] = p2.poly.at(key);
         }
     }
+    result.deleteZeros();
     return result;
 }
 
-Poly operator+(double scalar, const Poly &other)
+Poly operator-(const Poly &p1, const Poly &p2)
 {
-    Poly result = other;
-    result.poly[0] += scalar;
-    return result;
-}
-
-const Poly Poly::operator-(const Poly &other) const
-{
-    Poly result = *this;
-    for(auto coefficient : other.poly)
+    Poly result = p1;
+    for(auto coefficient : p2.poly)
     {
-        const int first = coefficient.first;
-        if(result.poly.count(first) > 0)
+        const int key = coefficient.first;
+        if(result.poly.count(key) > 0)
         {
-            result.poly[first] -= other.poly.at(first);
+            result.poly[key] -= p2.poly.at(key);
         }
         else
         {
-            result.poly[first] = -other.poly.at(first);
+            result.poly[key] = -p2.poly.at(key);
         }
     }
+    result.deleteZeros();
     return result;
 }
 
-Poly operator-(double scalar, const Poly &other)
-{
-    Poly result = other;
-    result.poly[0] -= scalar;
-    return result;
-}
-
-const Poly Poly::operator*(const Poly &other) const
+Poly operator*(const Poly &p1, const Poly &p2)
 {
     Poly result;
-    for(auto c1 : this->poly)
+    for(auto i1 : p1.poly)
     {
-        for(auto c2 : other.poly)
+        for(auto i2 : p2.poly)
         {
-            const int key = c1.first + c2.first;
-            const double value = c1.second * c2.second;
+            const int key = i1.first + i2.first;
+            const double value = i1.second * i2.second;
             if(result.poly.count(key) > 0)
             {
                 result.poly[key] += value;
@@ -100,18 +83,10 @@ const Poly Poly::operator*(const Poly &other) const
             }
         }
     }
+    result.deleteZeros();
     return result;
 }
 
-Poly operator*(double scalar, const Poly &other)
-{
-    Poly result = other;
-    for(auto &coefficient : result.poly)
-    {
-        coefficient.second *= scalar;
-    }
-    return result;
-}
 
 Poly Poly::operator-() const
 {
@@ -123,18 +98,18 @@ Poly Poly::operator-() const
     return result;
 }
 
-std::ostream &operator<<(std::ostream &stream, const Poly &p)
+std::ostream &operator<<(std::ostream &stream, const Poly &other)
  {
-    if(checkIfZero(p))
+    if(other.checkIfZero())
     {
         stream << "0";
         return stream;
     }
 
     bool displaySign = false;
-    for(auto c = p.poly.rbegin(); c != p.poly.rend(); ++c)
+    for(auto p = other.poly.rbegin(); p != other.poly.rend(); ++p)
     {
-        stream << parseCoefficient(c->first, c->second, displaySign);
+        stream << parseCoefficient(p->first, p->second, displaySign);
         displaySign = true;
     }
     return stream;
@@ -154,9 +129,9 @@ std::string parseCoefficient(int key, double value, bool displaySign)
     return sign + coefficient.substr(0, coefficient.find(".") + 3) + variable;
 }
 
-bool checkIfZero(const Poly &other)
+bool Poly::checkIfZero() const
 {
-    for(auto coefficient : other.poly)
+    for(auto coefficient : poly)
     {
         if(coefficient.second != 0)
         {
@@ -164,5 +139,18 @@ bool checkIfZero(const Poly &other)
         }
     }
     return true;
+}
+
+void Poly::deleteZeros()
+{
+    Poly result = *this;
+    for(auto p : poly)
+    {
+        if(p.second == 0)
+        {
+            result.poly.erase(p.first);
+        }
+    }
+    *this = result;
 }
 

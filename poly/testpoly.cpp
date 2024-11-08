@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void display(const Poly &p1, const Poly &p2);
+void display(Poly p1, const Poly &p2);
 void test(const Poly &p1, const Poly &p2);
 void testAddition(const Poly &p1, const Poly &p2);
 void testSubtraction(const Poly &p1, const Poly &p2);
@@ -23,11 +23,13 @@ int main()
   p2[2] = -6;
   p2[1] = 3;
 
+  Poly p3 = p1 - p1;
+
   display(p1, p2);
   test(p1, p2);
 }
 
-void display(const Poly &p1, const Poly &p2)
+void display(Poly p1, const Poly &p2)
 {
   cout << "Polynomial p1: " << p1 << endl;
   cout << "Polynomial p2: " << p2 << endl;
