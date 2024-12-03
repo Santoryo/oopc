@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.ts": "typescript",
+        "*.html": "html",
+        "exception": "cpp",
+        "cstdlib": "cpp",
+        "iostream": "cpp",
+        "iosfwd": "cpp",
+        "ostream": "cpp"
+    }
+}
