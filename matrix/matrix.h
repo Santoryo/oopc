@@ -85,11 +85,5 @@ public:
 class InvalidMatrixFileDimensionsException : public MatrixException
 {
 public:
-    InvalidMatrixFileDimensionsException(const std::string &msg = "Invalid dimensions of stream matrix") : MatrixException(msg) {}
-};
-
-class InvalidMatrixFileDimensionsException : public MatrixException
-{
-public:
     InvalidMatrixFileDimensionsException(const std::string &msg = "Dimensions in stream matrix must be positive integers") : MatrixException(msg) {}
 };
