@@ -158,14 +158,14 @@ void testFileConstructor()
         std::cout << "test2.txt, expected error \n";
         Matrix m(file2);
         std::cout << m << std::endl;
-    } catch (InvalidMatrixFileException &e) {
+    } catch (MatrixException &e) {
         std::cerr << e.what() << std::endl << std::endl;
     }
 
     try {
         Matrix m(file3);
         std::cout << "test3.txt \n" << m << std::endl;
-    } catch (InvalidMatrixFileException &e) {
+    } catch (MatrixException &e) {
         std::cerr << e.what() << std::endl;
     }
 }
