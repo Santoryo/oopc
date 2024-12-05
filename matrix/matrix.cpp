@@ -54,7 +54,7 @@ void readDimensions(std::ifstream &file, size_t &rowNum, size_t &colNum)
 
     if (rowNum <= 0 || colNum <= 0)
     {
-        throw InvalidMatrixFileException("Dimensions must be positive");
+        throw InvalidMatrixFileDimensionsException();
     }
 }
 
@@ -72,7 +72,7 @@ void fillData(std::ifstream &file, Matrix::MatrixData *data, size_t rowNum, size
         {
             if (currColNum >= colNum)
             {
-                throw InvalidMatrixFileException("Too many values in a row");
+                throw InvalidMatrixFileDimensionsException();
             }
 
             data->cells[currRowNum][currColNum] = value;
@@ -81,7 +81,7 @@ void fillData(std::ifstream &file, Matrix::MatrixData *data, size_t rowNum, size
 
         if (currColNum != colNum)
         {
-            throw InvalidMatrixFileException("Too few values in a row");
+            throw InvalidMatrixFileDimensionsException();
         }
 
         currRowNum++;
@@ -89,7 +89,7 @@ void fillData(std::ifstream &file, Matrix::MatrixData *data, size_t rowNum, size
 
     if (currRowNum != rowNum)
     {
-        throw InvalidMatrixFileException();
+        throw InvalidMatrixFileDimensionsException();
     }
 }
 
@@ -327,6 +327,7 @@ bool Matrix::operator==(const Matrix &other) const
             }
         }
     }
+    
     return true;
 }
 

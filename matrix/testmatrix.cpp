@@ -22,7 +22,6 @@ void populateMatrix(Matrix &m)
     }
 }
 
-
 void testAdditions()
 {
     std::cout << "Testing additions" << std::endl;
@@ -181,5 +180,4 @@ int main()
     testDetachment();
     testDifferentConstructors();
     testFileConstructor();
-    return 0;
 }
