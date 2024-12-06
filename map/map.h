@@ -80,7 +80,7 @@ public:
     {
         if (this->findKey(key) != -1)
         {
-            throw KeyAlreadyInTheMap();
+            throw KeyAlreadyInMap();
         }
         this->increaseCapacity();
         this->collection[this->size - 1] = Object(key, value);
@@ -112,7 +112,5 @@ public:
         return *this;
     }
 
-    class KeyAlreadyInTheMap
-    {
-    };
+    class KeyAlreadyInMap {};
 };

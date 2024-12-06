@@ -9,6 +9,8 @@ using namespace std;
 
 void addEmployees(Database& database);
 void modifyEmployees(Database& database);
+void addDuplicateEmployee(Database& database);
+void findNonExistentKey(Database& database);
 
 int main() {
 	Database database;
@@ -24,6 +26,9 @@ int main() {
 	database = newDatabase;												// Update original database
 
 	cout << "Database after the assignment:" << endl << database << endl;
+
+	addDuplicateEmployee(database);
+	findNonExistentKey(database);
 };
 
 void addEmployees(Database& database) {
@@ -40,4 +45,37 @@ void modifyEmployees(Database& database) {
 	
 	employeePtr = database.find(761028073);								// Find employee using its ID
 	employeePtr->age = 29;												// Modify the age of employee
+}
+
+
+void addDuplicateEmployee(Database& database)
+{
+	try
+	{
+		database.add(510212881, Employee("Adam Nowak", "secretary", 55));
+	}
+	catch(...)
+	{
+		std::cout << "Duplicates cannot be added" << std::endl;
+	}
+}
+
+void findNonExistentKey(Database& database)
+{
+	std::cout << "Testing key finding" << std::endl;
+	int arr[3] = {1231321, 510212881, 761028073};
+
+	for(int i = 0; i < 3; i++)
+	{
+		Employee* test = database.find(arr[i]);
+		std::cout << "Looking for key " << arr[i] << std::endl;
+		if(test == nullptr)
+		{
+			std::cout << "The key doesnt exist" << std::endl;
+		}
+		else
+		{
+			std::cout << arr[i] << ": " << *test << std::endl;
+		}
+	}
 }
