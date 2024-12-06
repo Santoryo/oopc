@@ -1,5 +1,4 @@
 #include "matrix.h"
-#include <string>
 #include <fstream>
 #include <sstream>
 
@@ -44,12 +43,12 @@ void readDimensions(std::ifstream &file, size_t &rowNum, size_t &colNum)
         std::istringstream iss(line);
         if (!(iss >> rowNum >> colNum))
         {
-            throw InvalidMatrixFileException("Invalid dimensions");
+            throw InvalidMatrixFileException();
         }
     }
     else
     {
-        throw InvalidMatrixFileException("Could not read dimensions");
+        throw InvalidMatrixFileException();
     }
 
     if (rowNum <= 0 || colNum <= 0)
@@ -160,10 +159,8 @@ double &Matrix::operator()(size_t i, size_t j)
         throw InvalidIndexException();
     }
 
-    if (data->referenceCount > 1)
-    {
-        data = data->detach();
-    }
+    data = data->detach();
+
     return data->cells[i][j];
 }
 
@@ -248,7 +245,14 @@ Matrix Matrix::operator*=(const Matrix &other)
 
 Matrix operator*=(double scalar, const Matrix &m)
 {
-    return m * scalar;
+    for (size_t i = 0; i < m.getRows(); i++)
+    {
+        for (size_t j = 0; j < m.getCols(); j++)
+        {
+            m.data->cells[i][j] *= scalar;
+        }
+    }
+    return m;
 }
 
 size_t Matrix::getRows() const
@@ -287,13 +291,39 @@ Matrix Matrix::operator-(const Matrix &other) const
 
 Matrix Matrix::operator+=(const Matrix &other)
 {
-    *this = *this + other;
+    if (data->rows != other.data->rows || data->cols != other.data->cols)
+    {
+        throw InvalidMatrixSizeException();
+    }
+    
+    data = data->detach();
+
+    for (size_t i = 0; i < data->rows; i++)
+    {
+        for (size_t j = 0; j < data->cols; j++)
+        {
+            data->cells[i][j] += other.data->cells[i][j];
+        }
+    }
     return *this;
 }
 
 Matrix Matrix::operator-=(const Matrix &other)
 {
-    *this = *this - other;
+    if (data->rows != other.data->rows || data->cols != other.data->cols)
+    {
+        throw InvalidMatrixSizeException();
+    }
+
+    data = data->detach();
+
+    for (size_t i = 0; i < data->rows; i++)
+    {
+        for (size_t j = 0; j < data->cols; j++)
+        {
+            data->cells[i][j] -= other.data->cells[i][j];
+        }
+    }
     return *this;
 }
 
