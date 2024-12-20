@@ -1,6 +1,7 @@
 #include "employee.h"													// Defines class Employee
 #include "map.h"														// Defines template Map<Key, Value>
 #include <iostream>
+#include "book.h"
 
 typedef unsigned int ID; 												// Identification number of employee
 typedef Map<ID, Employee> Database; 									// Database of employees
@@ -11,24 +12,22 @@ void addEmployees(Database& database);
 void modifyEmployees(Database& database);
 void addDuplicateEmployee(Database& database);
 void findNonExistentKey(Database& database);
+void testEmployees();
+
+typedef string Title;
+typedef Map<Title, Book> Library;
+
+void addBooks(Library& library);
+void makeBookAvailable(Library& library, Title title);
+void addDuplicateBook(Library& library);
+void testCopy(Library& lib);
+void testLibrary();
 
 int main() {
-	Database database;
-	addEmployees(database);
+	cout << boolalpha;
+	testEmployees();
+	testLibrary();
 
-	Database newDatabase = database;									// Make a copy of database
-	newDatabase.add(830505432, Employee("Ewa Nowak", "charwoman", 43));	// Add fourth employee
-	modifyEmployees(newDatabase);
-
-	cout << "Original database:" << endl << database << endl;
-	cout << "Modified database:" << endl << newDatabase << endl;
-
-	database = newDatabase;												// Update original database
-
-	cout << "Database after the assignment:" << endl << database << endl;
-
-	addDuplicateEmployee(database);
-	findNonExistentKey(database);
 };
 
 void addEmployees(Database& database) {
@@ -56,26 +55,114 @@ void addDuplicateEmployee(Database& database)
 	}
 	catch(...)
 	{
-		std::cout << "Duplicates cannot be added" << std::endl;
+		cout << "Duplicates cannot be added" << endl;
 	}
 }
 
 void findNonExistentKey(Database& database)
 {
-	std::cout << "Testing key finding" << std::endl;
+	cout << "Testing key finding" << endl;
 	int arr[3] = {1231321, 510212881, 761028073};
 
 	for(int i = 0; i < 3; i++)
 	{
 		Employee* test = database.find(arr[i]);
-		std::cout << "Looking for key " << arr[i] << std::endl;
+		cout << "Looking for key " << arr[i] << endl;
 		if(test == nullptr)
 		{
-			std::cout << "The key doesnt exist" << std::endl;
+			cout << "The key doesnt exist" << endl;
 		}
 		else
 		{
-			std::cout << arr[i] << ": " << *test << std::endl;
+			cout << arr[i] << ": " << *test << endl;
 		}
 	}
+}
+
+void addBooks(Library& library)
+{
+	library.add("Harry Potter", Book("J. K. Rowling", "fantasy", 300, false));
+	library.add("1984", Book("George Orwell", "dystopian", 350, true));
+	library.add("Hobbit", Book("J. R. R. Tolkien", "fantasy", 320, true));
+}
+
+void makeBookAvailable(Library& library, Title title)
+{
+	Book* bookPtr;
+	bookPtr = library.find(title);
+
+	if(bookPtr == nullptr)
+	{
+		cout << "The book '" << title << "' doesn't exist in Library Database" << endl;
+	}
+	else
+	{
+		cout << "Book '" << title << "' has been updated (availability false -> true)" << endl;
+		bookPtr->isAvailable = true;
+	}
+}
+
+void addDuplicateBook(Library& library)
+{
+	try
+	{
+		library.add("Hobbit", Book("J. R. R. Tolkien", "fantasy", 320, true));
+		cout << "Added Hobbit" << endl;
+	}
+	catch(...)
+	{
+		Book* bookPtr = library.find("Hobbit");
+		cout << "Duplicates cannot be added, the book exists: " << *bookPtr << endl;
+	}
+}
+
+void testCopy(Library& library)
+{
+	Library copy(library);
+	cout << "Copied library: "<< endl;
+	cout << copy << endl;
+}
+
+void testEmployees()
+{
+	Database database;
+	addEmployees(database);
+
+	Database newDatabase = database;									// Make a copy of database
+	newDatabase.add(830505432, Employee("Ewa Nowak", "charwoman", 43));	// Add fourth employee
+	modifyEmployees(newDatabase);
+
+	cout << "Original database:" << endl << database << endl;
+	cout << "Modified database:" << endl << newDatabase << endl;
+
+	database = newDatabase;												// Update original database
+
+	cout << "Database after the assignment:" << endl << database << endl;
+
+	addDuplicateEmployee(database);
+	findNonExistentKey(database);
+
+}
+
+
+void testLibrary()
+{
+	cout << endl;
+	Library lib;
+	addBooks(lib);
+	Library newLib = lib;
+	newLib.add("Lord of The Rings", Book("J. R. R. Tolkien", "fantasy", 1178, false));
+	makeBookAvailable(newLib, "Hobbit");
+	makeBookAvailable(lib, "Romeo and Juliet");
+
+	cout << "Original library: " << endl << lib << endl;
+	cout << "New modified library: " << endl << newLib << endl;
+
+	lib = newLib;
+
+	cout << "Library after the assigment: " << endl << lib << endl;
+
+	addDuplicateBook(lib);
+	testCopy(lib);
+
 }
