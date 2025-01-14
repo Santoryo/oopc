@@ -52,8 +52,19 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = pacman.cpp 
-OBJECTS       = pacman.o
+SOURCES       = pacman.cpp \
+		classes/Game.cpp \
+		classes/Grid.cpp \
+		classes/Maze.cpp \
+		classes/Pacman.cpp moc_Game.cpp \
+		moc_Maze.cpp
+OBJECTS       = pacman.o \
+		Game.o \
+		Grid.o \
+		Maze.o \
+		Pacman.o \
+		moc_Game.o \
+		moc_Maze.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -131,7 +142,15 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		pacman.pro  pacman.cpp
+		pacman.pro classes/Constants.h \
+		classes/Game.h \
+		classes/Grid.h \
+		classes/Maze.h \
+		classes/Pacman.h pacman.cpp \
+		classes/Game.cpp \
+		classes/Grid.cpp \
+		classes/Maze.cpp \
+		classes/Pacman.cpp
 QMAKE_TARGET  = pacman
 DESTDIR       = 
 TARGET        = pacman
@@ -315,7 +334,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents pacman.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents classes/Constants.h classes/Game.h classes/Grid.h classes/Maze.h classes/Pacman.h $(DISTDIR)/
+	$(COPY_FILE) --parents pacman.cpp classes/Game.cpp classes/Grid.cpp classes/Maze.cpp classes/Pacman.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -347,8 +367,25 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_Game.cpp moc_Maze.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_Game.cpp moc_Maze.cpp
+moc_Game.cpp: classes/Game.h \
+		classes/Maze.h \
+		classes/Grid.h \
+		classes/Pacman.h \
+		classes/Constants.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include classes/Game.h -o moc_Game.cpp
+
+moc_Maze.cpp: classes/Maze.h \
+		classes/Grid.h \
+		classes/Pacman.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include classes/Maze.h -o moc_Maze.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -361,12 +398,41 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
-pacman.o: pacman.cpp 
+pacman.o: pacman.cpp classes/Game.h \
+		classes/Maze.h \
+		classes/Grid.h \
+		classes/Pacman.h \
+		classes/Constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pacman.o pacman.cpp
+
+Game.o: classes/Game.cpp classes/Game.h \
+		classes/Maze.h \
+		classes/Grid.h \
+		classes/Pacman.h \
+		classes/Constants.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Game.o classes/Game.cpp
+
+Grid.o: classes/Grid.cpp classes/Grid.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Grid.o classes/Grid.cpp
+
+Maze.o: classes/Maze.cpp classes/Maze.h \
+		classes/Grid.h \
+		classes/Pacman.h \
+		classes/Constants.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Maze.o classes/Maze.cpp
+
+Pacman.o: classes/Pacman.cpp classes/Pacman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Pacman.o classes/Pacman.cpp
+
+moc_Game.o: moc_Game.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Game.o moc_Game.cpp
+
+moc_Maze.o: moc_Maze.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Maze.o moc_Maze.cpp
 
 ####### Install
 
