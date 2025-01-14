@@ -4,16 +4,12 @@
 #include <QWidget>
 #include <QPainter>
 
-class Maze : public QWidget {
-    Q_OBJECT
-
+class Maze {
 public:
-    Maze(QWidget *parent = nullptr);
+    Maze();
     ~Maze() = default;
-protected:
-    void paintEvent(QPaintEvent *event) override;
-private:
-    Grid grid;
     void drawGrid(QPainter &painter);
+    Grid grid;
+private:
     void drawCell(QPainter &painter, size_t row, size_t col);
 };

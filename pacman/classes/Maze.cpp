@@ -1,23 +1,9 @@
 #include "Maze.h"
 #include "Constants.h"
 
-Maze::Maze(QWidget *parent) : QWidget(parent)
+Maze::Maze()
 {
     grid.loadMap("assets/map.txt");
-    QPalette pal = palette();
-    pal.setColor(QPalette::Background, Qt::black);
-    this->setAutoFillBackground(true);
-    this->setPalette(pal);
-    this->resize(grid.getCols() * TILE_SIZE, grid.getRows() * TILE_SIZE);
-}
-
-
-void Maze::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
-    QPainter painter(this);
-    drawGrid(painter);
-    // pacman.draw(painter);
 }
 
 void Maze::drawGrid(QPainter &painter)

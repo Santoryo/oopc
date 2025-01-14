@@ -19,6 +19,6 @@
 
 // Other constants
 #define TILE_SIZE 30
-#define PACMAN_SPEED 5
+#define PACMAN_SPEED 1
 #define GHOST_SPEED 4
 #define GHOST_SPEED_SCARED 2

@@ -61,6 +61,7 @@
         "thread": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "qwidget": "cpp"
+        "qwidget": "cpp",
+        "qpainter": "cpp"
     }
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <array>
 
 class Grid {
 private:
@@ -14,5 +15,8 @@ public:
     size_t getCols();
     size_t getCell(int row, int col);
     void setCell(int row, int col, int value);
-    void updateMap();
+    bool canMoveTo(int row, int col);
+    std::array<int, 2> getCoordinates(int x, int y);
+    std::array<int, 2> getSpawnCoordinates(int type);
+    std::array<int, 2> findClosestCell(int x, int y);
 };

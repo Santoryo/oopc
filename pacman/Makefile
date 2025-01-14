@@ -52,13 +52,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = pacman.cpp \
+SOURCES       = PacmanGame.cpp \
 		classes/Game.cpp \
 		classes/Grid.cpp \
 		classes/Maze.cpp \
 		classes/Pacman.cpp moc_Game.cpp \
 		moc_Maze.cpp
-OBJECTS       = pacman.o \
+OBJECTS       = PacmanGame.o \
 		Game.o \
 		Grid.o \
 		Maze.o \
@@ -146,7 +146,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		classes/Game.h \
 		classes/Grid.h \
 		classes/Maze.h \
-		classes/Pacman.h pacman.cpp \
+		classes/Pacman.h PacmanGame.cpp \
 		classes/Game.cpp \
 		classes/Grid.cpp \
 		classes/Maze.cpp \
@@ -335,7 +335,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents classes/Constants.h classes/Game.h classes/Grid.h classes/Maze.h classes/Pacman.h $(DISTDIR)/
-	$(COPY_FILE) --parents pacman.cpp classes/Game.cpp classes/Grid.cpp classes/Maze.cpp classes/Pacman.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents PacmanGame.cpp classes/Game.cpp classes/Grid.cpp classes/Maze.cpp classes/Pacman.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -402,12 +402,12 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-pacman.o: pacman.cpp classes/Game.h \
+PacmanGame.o: PacmanGame.cpp classes/Game.h \
 		classes/Maze.h \
 		classes/Grid.h \
 		classes/Pacman.h \
 		classes/Constants.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pacman.o pacman.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PacmanGame.o PacmanGame.cpp
 
 Game.o: classes/Game.cpp classes/Game.h \
 		classes/Maze.h \

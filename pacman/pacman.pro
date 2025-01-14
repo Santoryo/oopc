@@ -15,6 +15,6 @@ INCLUDEPATH += .
 
 # Input
 HEADERS += classes/*.h
-SOURCES += pacman.cpp classes/*.cpp
+SOURCES += PacmanGame.cpp classes/*.cpp
 
 QT += core gui widgets
