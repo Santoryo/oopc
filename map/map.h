@@ -51,6 +51,14 @@ private:
         this->collection = newListOfObjects;        
     }
 
+    void copyData(const Map &otherMap)
+    {
+        this->collection = new Object[this->size];
+        for (size_t i = 0; i < this->size; i++)
+        {
+            this->collection[i] = otherMap.collection[i];
+        }
+    }
 public:
     Map()
     {
@@ -59,11 +67,7 @@ public:
 
     Map(const Map &otherMap) : size(otherMap.size)
     {
-        this->collection = new Object[this->size];
-        for (size_t i = 0; i < this->size; i++)
-        {
-            this->collection[i] = otherMap.collection[i];
-        }
+        copyData(otherMap);
     }
 
     Value *find(Key key)
@@ -80,7 +84,7 @@ public:
     {
         if (this->findKey(key) != -1)
         {
-            throw KeyAlreadyInTheMap();
+            throw KeyAlreadyExistsInMap();
         }
         this->increaseCapacity();
         this->collection[this->size - 1] = Object(key, value);
@@ -95,7 +99,7 @@ public:
     {
         for (size_t i = 0; i < map.size; i++)
         {
-            os << map.collection[i].key << " : " << map.collection[i].value << std::endl;
+            os << map.collection[i].key << ": " << map.collection[i].value << std::endl;
         }
         return os;
     }
@@ -104,15 +108,9 @@ public:
     {
         delete[] this->collection;
         this->size = otherMap.size;
-        this->collection = new Object[this->size];
-        for (size_t i = 0; i < this->size; i++)
-        {
-            this->collection[i] = otherMap.collection[i];
-        }
+        copyData(otherMap);
         return *this;
     }
 
-    class KeyAlreadyInTheMap
-    {
-    };
+    class KeyAlreadyExistsInMap {};
 };
