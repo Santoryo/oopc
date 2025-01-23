@@ -56,6 +56,24 @@ std::array<int, 2> Grid::getSpawnCoordinates(int type) {
     return {0, 0};
 }
 
+std::vector<std::array<int, 2>> Grid::positionsOf(int type)
+{
+    std::vector<std::array<int, 2>> positions;
+    for (size_t row = 0; row < getRows(); ++row)
+    {
+        for (size_t col = 0; col < getCols(); ++col)
+        {
+            if (getCell(row, col) == type)
+            {
+                std::array<int, 2> pos = {col * TILE_SIZE, row * TILE_SIZE};
+                positions.push_back(pos);
+            }
+        }
+    }
+    return positions;
+}
+
+
 std::array<int, 2> Grid::findClosestCell(int x, int y) {
     int row = y / TILE_SIZE;
     int col = x / TILE_SIZE;
@@ -63,13 +81,27 @@ std::array<int, 2> Grid::findClosestCell(int x, int y) {
     int dx = x % TILE_SIZE;
     int dy = y % TILE_SIZE;
 
-    if (dx > TILE_SIZE / 2) {
+    if (dx >= TILE_SIZE / 2) {
         col++;
     }
-    if (dy > TILE_SIZE / 2) {
+    if (dy >= TILE_SIZE / 2) {
         row++;
     }
 
     return {row, col};
 }
 
+std::array<int, 2> Grid::findCellInBounds(int x, int y) {
+    int row = y / TILE_SIZE;
+    int col = x / TILE_SIZE;
+
+    return {row, col};
+}
+
+bool Grid::isValidCell(int row, int col) {
+    return row >= 0 && row < getRows() && col >= 0 && col < getCols();
+}
+
+bool Grid::isWall(int row, int col) {
+    return map[row][col] == WALL;
+}

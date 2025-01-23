@@ -19,4 +19,8 @@ public:
     std::array<int, 2> getCoordinates(int x, int y);
     std::array<int, 2> getSpawnCoordinates(int type);
     std::array<int, 2> findClosestCell(int x, int y);
+    std::array<int, 2> findCellInBounds(int x, int y);
+    std::vector<std::array<int, 2>> positionsOf(int type);
+    bool isValidCell(int row, int col);
+    bool isWall(int row, int col);
 };

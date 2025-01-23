@@ -53,18 +53,32 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = PacmanGame.cpp \
+		classes/Blinky.cpp \
+		classes/Clyde.cpp \
 		classes/Game.cpp \
+		classes/Ghost.cpp \
 		classes/Grid.cpp \
+		classes/Inky.cpp \
 		classes/Maze.cpp \
-		classes/Pacman.cpp moc_Game.cpp \
-		moc_Maze.cpp
+		classes/Pacman.cpp \
+		classes/Pinky.cpp \
+		classes/Powerup.cpp qrc_res.cpp \
+		moc_Game.cpp \
+		moc_Powerup.cpp
 OBJECTS       = PacmanGame.o \
+		Blinky.o \
+		Clyde.o \
 		Game.o \
+		Ghost.o \
 		Grid.o \
+		Inky.o \
 		Maze.o \
 		Pacman.o \
+		Pinky.o \
+		Powerup.o \
+		qrc_res.o \
 		moc_Game.o \
-		moc_Maze.o
+		moc_Powerup.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -142,15 +156,27 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		pacman.pro classes/Constants.h \
+		pacman.pro classes/Blinky.h \
+		classes/Clyde.h \
+		classes/Constants.h \
 		classes/Game.h \
+		classes/Ghost.h \
 		classes/Grid.h \
+		classes/Inky.h \
 		classes/Maze.h \
-		classes/Pacman.h PacmanGame.cpp \
+		classes/Pacman.h \
+		classes/Pinky.h \
+		classes/Powerup.h PacmanGame.cpp \
+		classes/Blinky.cpp \
+		classes/Clyde.cpp \
 		classes/Game.cpp \
+		classes/Ghost.cpp \
 		classes/Grid.cpp \
+		classes/Inky.cpp \
 		classes/Maze.cpp \
-		classes/Pacman.cpp
+		classes/Pacman.cpp \
+		classes/Pinky.cpp \
+		classes/Powerup.cpp
 QMAKE_TARGET  = pacman
 DESTDIR       = 
 TARGET        = pacman
@@ -239,7 +265,8 @@ Makefile: pacman.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf 
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		pacman.pro
+		pacman.pro \
+		res.qrc
 	$(QMAKE) -o Makefile pacman.pro
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf:
@@ -319,6 +346,7 @@ Makefile: pacman.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf 
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 pacman.pro:
+res.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile pacman.pro
 
@@ -333,9 +361,10 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents res.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents classes/Constants.h classes/Game.h classes/Grid.h classes/Maze.h classes/Pacman.h $(DISTDIR)/
-	$(COPY_FILE) --parents PacmanGame.cpp classes/Game.cpp classes/Grid.cpp classes/Maze.cpp classes/Pacman.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents classes/Blinky.h classes/Clyde.h classes/Constants.h classes/Game.h classes/Ghost.h classes/Grid.h classes/Inky.h classes/Maze.h classes/Pacman.h classes/Pinky.h classes/Powerup.h $(DISTDIR)/
+	$(COPY_FILE) --parents PacmanGame.cpp classes/Blinky.cpp classes/Clyde.cpp classes/Game.cpp classes/Ghost.cpp classes/Grid.cpp classes/Inky.cpp classes/Maze.cpp classes/Pacman.cpp classes/Pinky.cpp classes/Powerup.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -359,32 +388,38 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_res.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_res.cpp
+qrc_res.cpp: res.qrc \
+		/usr/lib/qt5/bin/rcc \
+		assets/font.ttf
+	/usr/lib/qt5/bin/rcc -name res res.qrc -o qrc_res.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_Game.cpp moc_Maze.cpp
+compiler_moc_header_make_all: moc_Game.cpp moc_Powerup.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_Game.cpp moc_Maze.cpp
+	-$(DEL_FILE) moc_Game.cpp moc_Powerup.cpp
 moc_Game.cpp: classes/Game.h \
 		classes/Maze.h \
 		classes/Grid.h \
 		classes/Pacman.h \
+		classes/Powerup.h \
 		classes/Constants.h \
+		classes/Ghost.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include classes/Game.h -o moc_Game.cpp
 
-moc_Maze.cpp: classes/Maze.h \
-		classes/Grid.h \
-		classes/Pacman.h \
+moc_Powerup.cpp: classes/Powerup.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include classes/Maze.h -o moc_Maze.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/mnt/c/Users/lucy/Documents/chatwidget/chatwidget-f2ucoffee/oopc/pacman -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include classes/Powerup.h -o moc_Powerup.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -398,7 +433,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
@@ -406,33 +441,85 @@ PacmanGame.o: PacmanGame.cpp classes/Game.h \
 		classes/Maze.h \
 		classes/Grid.h \
 		classes/Pacman.h \
-		classes/Constants.h
+		classes/Powerup.h \
+		classes/Constants.h \
+		classes/Ghost.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PacmanGame.o PacmanGame.cpp
+
+Blinky.o: classes/Blinky.cpp classes/Blinky.h \
+		classes/Ghost.h \
+		classes/Grid.h \
+		classes/Constants.h \
+		classes/Pacman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Blinky.o classes/Blinky.cpp
+
+Clyde.o: classes/Clyde.cpp classes/Clyde.h \
+		classes/Ghost.h \
+		classes/Grid.h \
+		classes/Constants.h \
+		classes/Pacman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Clyde.o classes/Clyde.cpp
 
 Game.o: classes/Game.cpp classes/Game.h \
 		classes/Maze.h \
 		classes/Grid.h \
 		classes/Pacman.h \
-		classes/Constants.h
+		classes/Powerup.h \
+		classes/Constants.h \
+		classes/Ghost.h \
+		classes/Blinky.h \
+		classes/Inky.h \
+		classes/Clyde.h \
+		classes/Pinky.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Game.o classes/Game.cpp
 
-Grid.o: classes/Grid.cpp classes/Grid.h
+Ghost.o: classes/Ghost.cpp classes/Ghost.h \
+		classes/Grid.h \
+		classes/Constants.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Ghost.o classes/Ghost.cpp
+
+Grid.o: classes/Grid.cpp classes/Grid.h \
+		classes/Constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Grid.o classes/Grid.cpp
+
+Inky.o: classes/Inky.cpp classes/Inky.h \
+		classes/Ghost.h \
+		classes/Grid.h \
+		classes/Constants.h \
+		classes/Pacman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Inky.o classes/Inky.cpp
 
 Maze.o: classes/Maze.cpp classes/Maze.h \
 		classes/Grid.h \
 		classes/Pacman.h \
+		classes/Powerup.h \
 		classes/Constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Maze.o classes/Maze.cpp
 
-Pacman.o: classes/Pacman.cpp classes/Pacman.h
+Pacman.o: classes/Pacman.cpp classes/Pacman.h \
+		classes/Grid.h \
+		classes/Constants.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Pacman.o classes/Pacman.cpp
+
+Pinky.o: classes/Pinky.cpp classes/Pinky.h \
+		classes/Ghost.h \
+		classes/Grid.h \
+		classes/Constants.h \
+		classes/Pacman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Pinky.o classes/Pinky.cpp
+
+Powerup.o: classes/Powerup.cpp classes/Powerup.h \
+		classes/Constants.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Powerup.o classes/Powerup.cpp
+
+qrc_res.o: qrc_res.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_res.o qrc_res.cpp
 
 moc_Game.o: moc_Game.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Game.o moc_Game.cpp
 
-moc_Maze.o: moc_Maze.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Maze.o moc_Maze.cpp
+moc_Powerup.o: moc_Powerup.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Powerup.o moc_Powerup.cpp
 
 ####### Install
 

@@ -6,5 +6,7 @@ int main(int argc, char* argv[]) {
 
     Game game;
     game.show();
+    game.setWindowTitle("PacMan");
+
     return app.exec();
 }

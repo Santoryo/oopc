@@ -1,9 +1,14 @@
 #include "Maze.h"
 #include "Constants.h"
+#include "Powerup.h"
+
+int factor = 5;
+
 
 Maze::Maze()
 {
     grid.loadMap("assets/map.txt");
+    powerup = new Powerup();
 }
 
 void Maze::drawGrid(QPainter &painter)
@@ -25,7 +30,7 @@ void Maze::drawCell(QPainter &painter, size_t row, size_t col)
     if (cellValue == WALL)
     {
         painter.setBrush(Qt::NoBrush);
-        painter.setPen(QPen(Qt::blue, 2));
+        painter.setPen(QPen(QColor(MAZE_COLOR), 2));
 
         if (row == 0 || grid.getCell(row - 1, col) != WALL)
         {
@@ -49,9 +54,9 @@ void Maze::drawCell(QPainter &painter, size_t row, size_t col)
     }
     if (cellValue == COIN)
     {
-        painter.setBrush(Qt::yellow);
+        painter.setBrush(QColor(POINTS_COLOR));
         painter.setPen(Qt::NoPen);
-        int radius = TILE_SIZE / 10;
+        int radius = TILE_SIZE / 15;
         painter.drawEllipse(
             col * TILE_SIZE + TILE_SIZE / 2 - radius,
             row * TILE_SIZE + TILE_SIZE / 2 - radius,
@@ -60,13 +65,6 @@ void Maze::drawCell(QPainter &painter, size_t row, size_t col)
     }
     if (cellValue == POWERUP)
     {
-        painter.setBrush(Qt::white);
-        painter.setPen(Qt::NoPen);
-        int radius = TILE_SIZE / 5;
-        painter.drawEllipse(
-            col * TILE_SIZE + TILE_SIZE / 2 - radius,
-            row * TILE_SIZE + TILE_SIZE / 2 - radius,
-            radius * 2,
-            radius * 2);
+        powerup->draw(painter, col, row);
     }
 }

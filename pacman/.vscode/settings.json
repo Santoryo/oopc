@@ -62,6 +62,9 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "qwidget": "cpp",
-        "qpainter": "cpp"
+        "qpainter": "cpp",
+        "set": "cpp",
+        "queue": "cpp",
+        "unordered_set": "cpp"
     }
 }
